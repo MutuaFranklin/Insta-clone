@@ -1,0 +1,90 @@
+{%extends "registration/base.html"%}
+{% load crispy_forms_tags %}
+{% load static%}
+{% load bootstrap5 %}
+{% block content %}
+<div class="container">
+  <div class="row login">
+    <div class="col-md-4 login-image">
+
+      <img src="{% static 'images/instaphone.png' %}" class="insta" alt="" width="" height="600">
+
+
+    </div>
+
+    <div class="col-md-4 login-form">
+      <div class="card mt-4">
+
+        <div class="card-header bg-white">
+          <h3 class="text-center">
+            <img src="{% static 'images/logo.svg.png' %}" class="logo" alt="" width="250" height="100">
+          </h3>
+        </div>
+        <div class="card-body">
+          <form action="" method="post">
+            {% csrf_token %}
+            <div class="info">
+              <div class="form-floating mb-3 info">
+                <input type="text" name="username" class="form-control email" id="floatingInput"
+                  placeholder="Email or Username">
+                <label for="floatingInput">Phone number, Username or Email address</label>
+              </div>
+              <div class="form-floating info">
+                <input type="password" name="password" class="form-control email" id="floatingPassword"
+                  placeholder="Password">
+                <label for="floatingPassword">Password</label>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="d-grid gap-1">
+                <button class=" btn btn-primary" type="submit">Sign In</button>
+              </div>
+            </div>
+            <div class="help">
+              <div>
+                <input class="form-check-input" type="checkbox" value="True" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                  Remember Me
+                </label>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+        <div class="card mt-3">
+          <div class="card-body signup-here">
+              Don't have an account? <a href="{% url 'register' %}">Sign up</a>
+          </div>
+        </div>
+
+        <div class="mt-3">
+          <div class="getApp ">
+            <p>Get the App</p>
+            <div class="icons">
+              <img src="{% static 'images/ios.png' %}" height="40" class="m-1" alt="">
+              <img src="{% static 'images/playstore.png' %}" height="40" class="m-1" alt="">
+  
+            </div>
+          </div>
+        </div>
+
+          
+
+          <!-- <div class="card-footer">
+            <div class="sign-up">
+              Don't have an account? <a href="/register" class="ml-2">Sign Up</a>
+            </div>
+            <p class="getApp">Get the App</p>
+            
+          </div> -->
+          
+          
+      </div>
+
+    </div>
+    
+  </div>
+</div>
+
+{% endblock %}
