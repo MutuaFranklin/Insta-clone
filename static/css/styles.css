@@ -1,0 +1,43 @@
+.image-card{
+    margin: 1rem;
+    
+}
+
+
+
+.login{
+    display: flex;
+    justify-content: center;
+    margin-top: 8%;
+    /* align-items: center; */
+}
+
+.getApp{
+    text-align: center;
+    margin-top: 3%;
+}
+
+.signup-here{
+    text-align: center;
+    margin-top: 2%;
+}
+
+.icons{
+    display: flex;
+    justify-content: center;
+}
+
+
+/* INDEX */
+
+
+.imagePostCard{
+
+    width: 50rem;
+}
+
+
+.imagePostDetails{
+    display: flex;
+    flex-direction: column;
+}
