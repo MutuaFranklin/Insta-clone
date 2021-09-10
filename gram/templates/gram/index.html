@@ -1,0 +1,42 @@
+{% extends 'gram/base.html'%}
+
+{% block content%}
+
+<div class="container">
+    {% for image_post in object_list %}
+    <div class="col-md-8">
+
+        <div class="card text-center imagePostCard">
+            <div class="card-header">
+                {{image_post.posted_by}}
+            </div>
+            <div class="card-body">
+                <div class="imagePost">
+                    <a class="" href=""><img src="{{image_post.image.url}}" style="height: 24rem;  width: 50rem;" alt="" /></a>
+                </div>
+                <div class="imagePostDetails ">
+                    <div class="div">
+                        <h6>{{image_post.posted_by}}</h6>
+                        <p>{{image_post.image_caption}}</p>
+                    </div>
+                    <p>View all comments</p>
+                </div>
+                
+            </div>
+            <div class="card-footer text-muted">
+                <p>Add a comment</p>
+                
+            </div>
+        </div>
+    </div>
+
+    {% empty %}
+    <div class="row">
+        <h6 class="text-center">There No Image Items</h6>
+    </div>
+
+    {%endfor%}
+
+</div>
+
+{% endblock %}
