@@ -54,9 +54,13 @@ def logout(request):
 
 
 def home(request):
+    images = Image.objects.all()
+    # users = Profile.objects.exclude(id=request.user.id)
     title ='Home'
     context ={
+        "images":images,
         "title":title,
+        # "users":users
     }
 
     return render(request, 'gram/index.html', context)

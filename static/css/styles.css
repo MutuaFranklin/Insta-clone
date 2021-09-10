@@ -31,13 +31,28 @@
 /* INDEX */
 
 
-.imagePostCard{
+.imagePostCard .header{
+    display: flex !important;
 
-    width: 50rem;
+}
+
+.imagePostCard .header a{
+    text-decoration: none;
+    color: black;
+    margin-top: 4%;
 }
 
 
-.imagePostDetails{
-    display: flex;
-    flex-direction: column;
+.imagePostCard .details{
+    display: flex !important;
+
 }
+
+.imagePostCard .details a{
+    text-decoration: none;
+    color: black;
+    margin: 3px;
+}
+
+
+
