@@ -54,14 +54,16 @@ def logout(request):
 
 
 def home(request):
-    images = Image.objects.all().order_by('-posted_on')
     current_user = request.user
+    images = Image.objects.all().order_by('-posted_on')
+    user = Profile.objects.get(user=current_user)
+   
 
     if request.method == 'POST':
         iForm = ImagePostForm(request.POST, request.FILES)
         if iForm.is_valid():
             image_post = iForm.save(commit=False)
-            image_post.posted_by = current_user
+            image_post.posted_by = user
             image_post.save()
             return redirect('home')
     else:
@@ -113,28 +115,15 @@ def myProfile(request, id):
     # users = Profile.objects.all()
     # posts = request.user.profile.posts.all()
     profile = Profile.objects.get(id =id)
+    images = Image.objects.filter(profile = profile).order_by('-post_date')
 
     print(profile)
     
-
-    if request.method == 'POST':
-        user_form = UpdateUserForm(request.POST, instance=request.user)
-        prof_form = UpdateUserProfileForm(request.POST, request.FILES, instance=request.user.profile)
-        if user_form.is_valid() and prof_form.is_valid():
-            user_form.save()
-            prof_form.save()
-            return redirect('home')
-    else:
-        user_form = UpdateUserForm(instance=request.user)
-        prof_form = UpdateUserProfileForm(instance=request.user.profile)
-
-
-    print(profiles)
     title ='Profile'
     context ={
         "title":title,
-        "profiles":profiles,
-        "users":users,
+        "profiles":profile,
+        "images": images
         # "userProfiles":userProfiles
     }
 
