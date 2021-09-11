@@ -11,6 +11,11 @@ class UserRegistrationForm(UserCreationForm):
     class Meta:
         model = User
         # fields="__all__"
+        help_texts = {
+            "password2":None,
+            "username":None,
+        }
+
         fields = ('first_name', 'last_name', 'email','username',  'password1', 'password2')
         widgets = {
             'first_name':forms.TextInput(attrs = {'class':'form-control names', 'placeholder':"First Name", 'label': 'First Name'}),
@@ -18,7 +23,7 @@ class UserRegistrationForm(UserCreationForm):
             'email':forms.TextInput(attrs = {'class':'form-control names', 'placeholder':"Email Address", 'label': 'Email Address'}),
             'username':forms.TextInput(attrs = {'class':'form-control names', 'placeholder':"Username", 'label': 'Username'}),
             'password1':forms.PasswordInput(attrs = {'class':'form-control ','type':'password', 'placeholder':"Password", 'label': 'Password'}),
-            'password2':forms.PasswordInput(attrs = {'class':'form-control', 'placeholder':"Confirm Password", 'label': 'Confirm Password'}),
+            'password2':forms.PasswordInput(attrs = {'class':'form-control', 'type':'password', 'placeholder':"Confirm Password", 'label': 'Confirm Password'}),
         }
 
 # class LoginForm(forms.Mod):
@@ -42,5 +47,21 @@ class ImagePostForm(forms.ModelForm):
     class Meta:
         model = Image
         fields = ('image', 'image_caption')
+
+
+class CommentForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.fields['comment'].widget = forms.TextInput()
+            self.fields['comment'].widget.attrs['placeholder'] = 'Add a comment...'
+            
+    class Meta:
+        model = Comment
+        fields = ('comment',)
+
+       
+
+
+
 
 

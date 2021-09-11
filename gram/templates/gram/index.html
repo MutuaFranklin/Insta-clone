@@ -1,20 +1,36 @@
 {% extends 'gram/base.html'%}
+{% load crispy_forms_tags %}
+{% load bootstrap5 %}
+{% load static%}
+
 
 {% block content%}
 
 <div class="container">
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#imagePostModal">
+        Make a Post
+    </button>
+
+    {% include "modals/imagePostModal.html" %}
+
+
     {% for image_post in images %}
     <div class="col-md-8">
+        
         <div class="card imagePostCard mt-3" style="width: 45rem;">
             <div class="header">
                 <img src="{{image_post.posted_by.profile_pic.url}}" class="m-3" height="40"  width="40"  style="border-radius: 50%;" alt="...">
                 <a href=""><h6>{{image_post.posted_by}}</h6></a>
             </div>
                 
-         <!-- <a class="" href=""><img src="{{image_post.image.url}}" style="height: 24rem;  width: 50rem;" alt="" /></a> -->
           
             <img src="{{image_post.image.url}}" class="card-img-top" alt="...">
             <div class="card-body">
+                <div class="post-icons">
+                    <img src="{% static 'images/like.jpg' %}" alt=""  width="40">
+                    <a href="{% url 'comment' image_post.id%}"><img src="{% static 'images/commentIcon.jpg' %}"  alt="" width="40"></a>
+                </div>
                 <div class="details">
                     <a href=""><h6>{{image_post.posted_by}}</h6></a>
                     <p class="card-text">{{image_post.image_caption}}</p> 
@@ -23,13 +39,18 @@
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">
-                    <p>Add a comment</p>
+                    <form action="" method="POST" class="d-flex">
+                        {% csrf_token %}
+
+                        <!-- <div class="form-floating"></div>
+                            <input class="form-control" name="comment" placeholder="Leave a comment here" id="floatingTextarea"></input>
+                            <button type="submit" class="btn">Post</button>
+                        </div> -->
+                    </form>
                 </li>
             </ul>
-            <!-- <div class="card-body">
-              <a href="#" class="card-link">Card link</a>
-              <a href="#" class="card-link">Another link</a>
-            </div> -->
+
+            
           </div>
 
     </div>
@@ -40,6 +61,7 @@
     </div>
 
     {%endfor%}
+
 
 </div>
 

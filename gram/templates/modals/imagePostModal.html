@@ -1,0 +1,27 @@
+{% load bootstrap5 %}
+  <!-- Modal -->
+  <div class="modal fade" id="imagePostModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">Post a Photo</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form action="" method="post" enctype="multipart/form-data" novalidate>
+                    {%csrf_token%}
+
+                    {% bootstrap_form iForm%}
+                    <button class="btn btn-sm btn-success">Upload</button>
+                    
+                </form>
+                 
+              </div>
+              <div class="modal-footer">
+                  
+                  <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Close
+              </div>
+          </div>
+      </div>
+  </div>

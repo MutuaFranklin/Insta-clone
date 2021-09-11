@@ -30,7 +30,7 @@ class Image(models.Model):
     image_name =models.CharField(max_length=100)
     image_caption =models.TextField(blank= True)
     likes = models.ManyToManyField(Profile, related_name="image_posts", blank= True)
-    posted_by = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    posted_by = models.ForeignKey(User, on_delete=models.CASCADE)
     posted_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -51,7 +51,7 @@ class Image(models.Model):
         return self.likes.count()
 
     class Meta:
-        ordering = ['posted_on']
+        ordering = ['-posted_on']
 
 
 

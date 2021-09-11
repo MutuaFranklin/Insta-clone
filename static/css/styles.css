@@ -54,5 +54,15 @@
     margin: 3px;
 }
 
+input title{
+    display: none
+}
+
+
+.singlePost{
+    display: flex;
+    justify-content: center;
+}
+
 
 

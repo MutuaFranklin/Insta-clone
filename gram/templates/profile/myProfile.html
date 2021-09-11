@@ -1,0 +1,47 @@
+{% extends 'gram/base.html'%}
+
+{% block content%}
+
+<div class="container profile">
+    <div class="col-md-10 profile-details">
+        <div class="col-md-10 details">
+            <div class="userImage">
+
+                <img class="profilePic" src="{{user.profile.profile_pic.url}}" alt="">
+
+            </div>
+            <div class="userDetails">
+
+                {{user.username}}
+                
+
+
+                {% for user in users %}
+
+                <p>{{user.user}}</p>
+                <p>{{user.name}}</p>
+                 <p>{{user.bio}}</p>
+
+
+                
+
+                
+
+
+                {% endfor%}
+
+
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+{% endblock%}
