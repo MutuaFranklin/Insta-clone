@@ -1,37 +1,62 @@
-{% extends 'gram/base.html'%}
+{% extends 'gram/base.html' %}
 
 {% block content%}
 
 <div class="container profile">
-    <div class="col-md-10 profile-details">
-        <div class="col-md-10 details">
-            <div class="userImage">
+    <div class="col-md-12 profile-details">
+        <div class="col-md-10 details mt-4">
+            <div class="row">
+               <div class=" col-md-5 userImage">
 
-                <img class="profilePic" src="{{user.profile.profile_pic.url}}" alt="">
+                    <img class="profilePic" src="{{myProfile.profile_pic.url}}" alt="" height="150rem" width="150rem" style="border-radius: 50%;">
+
+                </div>
+            <div class="col-md-7 userDetails">
+                <div class="n mb-3" >
+                    <span class="me-5">{{myProfile.user.username }}</span>
+                    <button class="edit-profile">Edit profile</button>
+
+
+                </div>
+                <div class="d mb-3">
+                    <span class="me-3"><strong>0 </strong>posts</span>
+                    <span class="me-3"><strong>0 </strong>followers</span>
+                    <span class="me-3"><strong>0 </strong>following</span>
+                    
+                </div>
+                <div class="name">
+                    <h6>{{myProfile.name}}</h6>
+                    <p class="text-muted " >{{myProfile.bio}}</p>
+                </div>
+
+
+
+            </div> 
+            </div>
+            
+        <div class="col-md-10 userPosts mt-5">
+            <hr class="mt-6">
+            <div class="nav mb-3">
+                <span class="me-4">POSTS</span>
+                <span class="me-4">IGTV</span>
+                <span class="me-4">SAVED</span>
+                <span class="me-4">TAGGED</span>  
 
             </div>
-            <div class="userDetails">
+            <div class="row userposts">
+                {% for image in images %}
 
-                {{user.username}}
-                
-
-
-                {% for user in users %}
-
-                <p>{{user.user}}</p>
-                <p>{{user.name}}</p>
-                 <p>{{user.bio}}</p>
+                <img src="{{image.image.url}}" alt="" style="width: 19rem;">
 
 
-                
 
-                
-
-
-                {% endfor%}
+                {%endfor%}
 
 
             </div>
+
+
+        </div>
 
 
 

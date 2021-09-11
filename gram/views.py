@@ -90,21 +90,23 @@ class postImageDetails(DetailView):
 
 @login_required(login_url='login')
 def profile(request, username):
-    # profiles = Profile.objects.get(username=username)
+    current_user = request.user
     profiles = get_object_or_404(User, username=username)
-    users = Profile.objects.all()
-    print(users)
-    # userProfiles = Profile.objects.get(user=request.user.id)
+    myProfile = Profile.objects.get(user=current_user)
+    me = Profile.objects.get(user=current_user)
+
+    images = Image.objects.filter(posted_by = me).order_by('-posted_on')
+
+    # print(images)
 
 
 
-    print(profiles)
     title ='Profile'
     context ={
         "title":title,
         "profiles":profiles,
-        "users":users,
-        # "userProfiles":userProfiles
+        "myProfile":myProfile,
+        "images":images
     }
 
     return render(request, 'profile/myProfile.html', context)
