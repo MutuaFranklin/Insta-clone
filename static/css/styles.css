@@ -61,7 +61,9 @@
     margin: 3px;
 }
 
-
+.imagePostCard #like{
+    display: none;
+}
 
 
 input title{

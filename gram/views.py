@@ -3,7 +3,7 @@ from django import contrib
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView
 from .models import Follow, Image, Profile, User, Comment
-from .forms import UserRegistrationForm, ImagePostForm, CommentForm, UpdateUserProfileForm, UpdateUserForm
+from .forms import AddUserProfileForm, UserRegistrationForm, ImagePostForm, CommentForm, UpdateUserProfileForm, UpdateUserForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -13,6 +13,9 @@ from django.contrib import messages
 # Create your views here.
 def register(request):
     reg_form = UserRegistrationForm()
+
+
+
     if request.method == 'POST':
         reg_form = UserRegistrationForm(request.POST)
         if reg_form.is_valid():
@@ -20,6 +23,9 @@ def register(request):
             user = reg_form.cleaned_data.get('username')
             messages.success(request, 'Account was created for ' + user)
             return redirect('login')
+        else:
+            reg_form = UserRegistrationForm()
+            pForm = AddUserProfileForm()
 
     title = 'Registration'
     # context ={
@@ -58,6 +64,9 @@ def home(request):
     current_user = request.user
     images = Image.objects.all().order_by('-posted_on')
     user = User.objects.get(username=current_user)
+    profUser = Profile.objects.get(user=current_user)
+
+
     # userFollow = Follow.objects.get(user=user)
     # images = Image.objects.get(posted_by=userFollow.username).order_by('-posted_on')
 
@@ -67,7 +76,7 @@ def home(request):
         iForm = ImagePostForm(request.POST, request.FILES)
         if iForm.is_valid():
             image_post = iForm.save(commit=False)
-            image_post.posted_by = user
+            image_post.posted_by = current_user.profile
             image_post.save()
             return redirect('home')
     else:
@@ -80,7 +89,7 @@ def home(request):
         "images":images,
         "title":title,
         "iForm":iForm,
-        # "userFollow": userFollow,
+        "user":user,
     
     }
 

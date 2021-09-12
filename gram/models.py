@@ -1,27 +1,40 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+
 # from cloudinary.models import CloudinaryField
 
 
 
 # Create your models here.
 class Profile(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     name = models.CharField(blank=True, max_length=120)
-    profile_pic = models.ImageField(upload_to = 'instaPhotos', blank= True)
+    profile_pic = models.ImageField(upload_to = 'instaPhotos',default='avartar.jpg')
     bio = models.TextField(blank= True)
     followers = models.IntegerField(default=0)
     following = models.IntegerField(default=0)
 
     def __str__(self):
         return self.user.username
+    
+    @receiver(post_save, sender=User)
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(user=instance)
+
+    @receiver(post_save, sender=User)
+    def save_user_profile(sender, instance, **kwargs):
+        instance.profile.save()
 
     def save_profile(self):
             self.save()
 
-    # @classmethod
-    # def search_user(cls,user): 
-        # return User.objects.filter(user = user)
+        
+
+   
+   
 
     @classmethod
     def search_user(cls, username):
@@ -34,8 +47,8 @@ class Image(models.Model):
     image= models.ImageField(upload_to ='instaPhotos', default='avartar.png')
     image_name =models.CharField(max_length=100)
     image_caption =models.TextField(blank= True)
-    likes = models.ManyToManyField(Profile, related_name="image_posts", blank= True)
-    posted_by = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    likes = models.ManyToManyField(Profile, related_name="like", blank= True)
+    posted_by = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='post_user')
     posted_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -82,7 +95,6 @@ class Comment(models.Model):
 
     
 class Follow(models.Model): 
-    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='username')
     following = models.ManyToManyField(Profile, blank= True, related_name='user_following')
     followers = models.ManyToManyField(Profile, blank= True, related_name='user_followers')
 
