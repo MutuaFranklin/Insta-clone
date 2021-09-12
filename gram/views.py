@@ -141,14 +141,15 @@ def userProfile(request, username):
     otherUser = get_object_or_404(User, username=username)
     userProfile = Profile.objects.get(user=otherUser)
     images = Image.objects.filter(posted_by = userProfile).order_by('-posted_on')
+    title ='User Profile'
+    context ={
+        "title":title,
+        "otherUser":otherUser,
+        "userProfile":userProfile,
+        "images": images,
+        
+    }
 
-    followers = Follow.objects.filter(following=otherUser.profile)
-    is_followed = None
-    for follower in followers:
-        if request.user.profile == follower.follower:
-            is_followed = True
-        else:
-            is_followed = False
     if request.method == 'POST':
         if 'userProf_id' in request.POST:
             userProf_id = request.POST.get('userProf_id')
@@ -162,17 +163,9 @@ def userProfile(request, username):
             oProf.followers.add(request.user)
             oProf.save()
     
-    title ='User Profile'
-    # context ={
-    #     "title":title,
-    #     "otherUser":otherUser,
-    #     "userProfile":userProfile,
-    #     "images": images,
-    #     "is_followed":is_followed,
-    #     "followers": followers
-    # }
+    
 
-    return render(request, 'profile/userProfile.html', locals())
+    return render(request, 'profile/userProfile.html',  locals())
 
 
 def single_post(request, id):

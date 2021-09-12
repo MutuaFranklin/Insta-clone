@@ -13,9 +13,9 @@ class Profile(models.Model):
     name = models.CharField(blank=True, max_length=120)
     profile_pic = models.ImageField(upload_to = 'instaPhotos',default='avartar.jpg')
     bio = models.TextField(blank= True)
-    followers = models.ManyToManyField('Follow',related_name="user_followers", blank=True)
-    following = models.ManyToManyField('Follow',related_name="user_following",blank=True)
-
+    followers=models.ManyToManyField(User,related_name='followers')
+    following=models.ManyToManyField(User,related_name='following')
+    
     def __str__(self):
         return self.user.username
     

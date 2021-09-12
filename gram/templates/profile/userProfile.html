@@ -6,78 +6,80 @@
     <div class="r profile-details">
         <div class="col-md-12  mt-4">
             <div class="row details">
-               <div class=" col-md-5 userImage">
+                <div class=" col-md-5 userImage">
 
-                    <img class="profilePic" src="{{userProfile.profile_pic.url}}" alt="" height="150rem" width="150rem" style="border-radius: 50%;">
+                    <img class="profilePic" src="{{userProfile.profile_pic.url}}" alt="" height="150rem" width="150rem"
+                        style="border-radius: 50%;">
 
                 </div>
-            <div class="col-md-7 userDetails">
-                <div class="n mb-3 d-flex" >
-                    <span class="me-3">{{userProfile.user.username}}</span>
-                    {% if is_followed %}
+                <div class="col-md-7 userDetails">
+                    <div class="n mb-3 d-flex">
+                        <span class="me-3">{{userProfile.user.username}}</span>
+                        {% if request.user != userProfile.user %}
 
-                    <button class="message"  data-bs-toggle="modal">Message</button>
+                            {% if request.user != userProfile.followers %}
 
-                    <!-- <a href=""><button class="unfollow"  data-bs-toggle="modal">Unfollow</button></a> -->
+                            <form method="post">
+                                {%csrf_token%}
+                                <input hidden name="userProf_id" value="{{userProfile.user.id}}">
+                                <button class="btn btn-sm btn-primary" type="submit"> follow</button>
+                            </form>
 
 
-                    {% else %}
-                        {% if request.user != userProfile.user%}
-                        <form method="post">
-                            {%csrf_token%}
-                            <input hidden name="that_user_id" value="{{userProfile.user.id}}">
-                            <button class="btn btn-sm btn-primary" type="submit"> follow</button>
-                        </form>
+                            {% else %}
+
+                            <button class="message">Message</button>
+                            <button class="edit-profile">Unfollow</button>
+
+                            {% endif %}
+
                         {% else %}
                         <button class="edit-profile">Edit profile</button>
 
+
                         {% endif %}
-                    <!-- <a href=""><button class="unfollow"  data-bs-toggle="modal">Follow</button></a> -->
 
 
-                    {% endif %}
+                    </div>
+                    <div class="d mb-3">
+                        <span class="me-3"><strong>{{images.image.count}} </strong>posts</span>
+                        <span class="me-3"><strong>{{userProfile.followers.count}} </strong>followers</span>
+                        <span class="me-3"><strong>{{userProfile.following.count}} </strong>following</span>
+
+                    </div>
+                    <div class="name">
+                        <h6>{{userProfile.name}}</h6>
+                        <p class="text-muted ">{{userProfile.bio}}</p>
+                    </div>
+
 
 
                 </div>
-                <div class="d mb-3">
-                    <span class="me-3"><strong>0 </strong>posts</span>
-                    <span class="me-3"><strong>{{userProfile.followers.count}} </strong>followers</span>
-                    <span class="me-3"><strong>{{userProfile.following.count}} </strong>following</span>
-                    
+            </div>
+
+            <div class="col-md-12 userPosts mt-5">
+                <hr class="mt-6">
+                <div class="nav mb-3">
+                    <span class="me-4">POSTS</span>
+                    <span class="me-4">IGTV</span>
+                    <span class="me-4">SAVED</span>
+                    <span class="me-4">TAGGED</span>
+
                 </div>
-                <div class="name">
-                    <h6>{{userProfile.name}}</h6>
-                    <p class="text-muted " >{{userProfile.bio}}</p>
+                <div class="row userposts">
+                    {% for image in images %}
+
+                    <img class="mb-3" src="{{image.image.url}}" alt="" style="width: 19rem; height: 19rem;">
+
+
+
+                    {%endfor%}
+
+
                 </div>
 
 
-
-            </div> 
             </div>
-            
-        <div class="col-md-12 userPosts mt-5">
-            <hr class="mt-6">
-            <div class="nav mb-3">
-                <span class="me-4">POSTS</span>
-                <span class="me-4">IGTV</span>
-                <span class="me-4">SAVED</span>
-                <span class="me-4">TAGGED</span>  
-
-            </div>
-            <div class="row userposts">
-                {% for image in images %}
-
-                <img class="mb-3" src="{{image.image.url}}" alt="" style="width: 19rem; height: 19rem;">
-
-
-
-                {%endfor%}
-
-
-            </div>
-
-
-        </div>
 
 
 
