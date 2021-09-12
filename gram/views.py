@@ -141,16 +141,38 @@ def userProfile(request, username):
     otherUser = get_object_or_404(User, username=username)
     userProfile = Profile.objects.get(user=otherUser)
     images = Image.objects.filter(posted_by = userProfile).order_by('-posted_on')
+
+    followers = Follow.objects.filter(following=otherUser.profile)
+    is_followed = None
+    for follower in followers:
+        if request.user.profile == follower.follower:
+            is_followed = True
+        else:
+            is_followed = False
+    if request.method == 'POST':
+        if 'userProf_id' in request.POST:
+            userProf_id = request.POST.get('userProf_id')
+            userProf = User.objects.get(id=userProf_id) 
+
+            myProf = Profile.objects.get(user=request.user)
+            myProf.following.add(userProf) 
+            myProf.save()
+
+            oProf = Profile.objects.get(user=userProf)
+            oProf.followers.add(request.user)
+            oProf.save()
     
     title ='User Profile'
-    context ={
-        "title":title,
-        "otherUser":otherUser,
-        "userProfile":userProfile,
-        "images": images
-    }
+    # context ={
+    #     "title":title,
+    #     "otherUser":otherUser,
+    #     "userProfile":userProfile,
+    #     "images": images,
+    #     "is_followed":is_followed,
+    #     "followers": followers
+    # }
 
-    return render(request, 'profile/userProfile.html', context)
+    return render(request, 'profile/userProfile.html', locals())
 
 
 def single_post(request, id):
@@ -246,7 +268,6 @@ def search_user(request):
     else:
         message = "You haven't searched for any term"
         return render(request, 'gram/search.html',{"message":message})
-
 
 
 
