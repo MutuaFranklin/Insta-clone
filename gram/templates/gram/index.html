@@ -50,14 +50,15 @@
                 </div>
                 
                 <div class="post-comments">
+                    {% if image_post.comments.all %}
                     <p class="text-muted fw-light">view all {{image_post.comments.all.count}} comments</p>
-                  {% for comment in image_post.comments.all %}
+                    {% endif %}
+                    {% for comment in image_post.comments.all %}
                   <div class="details">
                     <a href="{% url 'userProfile' image_post.posted_by %}"><h6>{{comment.posted_by}}</h6></a>
                     <p class="card-text fw-light">{{comment.comment}}</p> 
                 </div>
                   {% empty %}
-                  <p>no comments</p>
                   {% endfor %}
                 </div>
                
