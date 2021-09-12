@@ -24,7 +24,7 @@
             <div class="card imagePostCard mt-3" style="width: 45rem;">
                 <div class="header">
                     <img src="{{image_post.posted_by.profile_pic.url}}" class="m-3" height="40"  width="40"  style="border-radius: 50%;" alt="...">
-                    {% if current_user == request.user %}
+                    {% if request.user == image_post.posted_by %}
                         <a href="{% url 'profile' image_post.posted_by %}"><h6>{{image_post.posted_by}}</h6></a>
                     {% else %}
                         <a href="{% url 'userProfile' image_post.posted_by %}"><h6>{{image_post.posted_by}}</h6></a>
