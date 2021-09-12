@@ -8,9 +8,9 @@
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <form class="d-flex" style="margin-left: 30%;"  role="search" action="">
-        <input class="form-control me-2" type="search" name="username" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-danger" type="submit" >Search</button>
+      <form class="d-flex" style="margin-left: 30%;"  role="search" action="{% url 'search_user'%}">
+        <input class="form-control me-2" type="search" name="username"  placeholder="Search" aria-label="Search">
+        <!-- <button class="btn btn-outline-danger" type="submit" >Search</button> -->
       </form>
       <!-- data-bs-toggle="modal" data-bs-target="#searchUserModal" -->
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -24,12 +24,10 @@
           <li class="nav-item">
             <a href="{% url 'home' %}"><img src="{% static 'images/like.jpg' %}" alt="" width="40rem" class="D-block mx-auto"></a>
           </li>
-          <!-- <li class="nav-item">
-            <a class="nav-link" href="/accounts/login">Login</a>
-          </li> -->
+          
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <!-- <img class="nav-profile" src="{{request.user.profile_photo.url}}" alt=""> -->
+              <img class="nav-profile" src="{{request.user.profile_pic.url}}" alt="">
               {{request.user}}
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">

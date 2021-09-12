@@ -4,31 +4,29 @@
 <div class="container  search_user">
   <div class="container">
 
-    <div class="row mt-5">
-      {% if category_images %}
-        <h5>Found {{category_images|length }} of searched category {{message}}.</h5>
-      {% else %}
-        <h5> Found 0 images for the search category {{message}}.</h5>
-      {% endif %}
-
-    </div>
-
+    
       
 
-      <div class="row mt-3">
-          {%for image_item in category_images %}
-
-          <img src="{{image_item.image.url}}" class="card-img-top m-2" alt="image" style="height: 20rem; width: 25rem;"
-              data-bs-toggle="modal" data-bs-target="#imageEnlarge{{image_item.id}}">
-              <!-- <img src="{{image_item.image.url}}" style="background-color: blanchedalmond; height: 20rem;" alt=""> -->
-
-
+      <div class="col-md-8 mt-5">
+        {%for user in searched_users %}
+          <div class="col-md-4">
+              <div class="row">
+                  <div class="col-md-4">
+                      <img src="{{user.profile_pic.url}}" alt="" style="width:4rem; height: 4rem; border-radius: 50%; border: 3px solid rgb(206, 126, 243);">
+                  </div>
+                  <div class="col-md-8">
+                      <a href="{% url 'userProfile' user.user.username %}"><p>{{user.user.username }}</p></a>
+                  </div>
+              </div>
+          </div>
           {% empty %}
           <div class="row">
-              <h5 class="text-center">There are No Image Items</h5>
+              <h5 class="text-center">No user found</h5>
           </div>
+          {% endfor %}
 
-          {%endfor%}
+         
+
       </div>
   </div>
 

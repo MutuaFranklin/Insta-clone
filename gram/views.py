@@ -2,7 +2,7 @@ from typing import ContextManager
 from django import contrib
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView
-from .models import Image, Profile, User, Comment
+from .models import Follow, Image, Profile, User, Comment
 from .forms import UserRegistrationForm, ImagePostForm, CommentForm, UpdateUserProfileForm, UpdateUserForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
@@ -57,7 +57,10 @@ def logout(request):
 def home(request):
     current_user = request.user
     images = Image.objects.all().order_by('-posted_on')
-    user = Profile.objects.get(user=current_user)
+    user = User.objects.get(username=current_user)
+    # userFollow = Follow.objects.get(user=user)
+    # images = Image.objects.get(posted_by=userFollow.username).order_by('-posted_on')
+
    
 
     if request.method == 'POST':
@@ -70,17 +73,15 @@ def home(request):
     else:
         iForm = ImagePostForm()
 
-    three_comments = Comment.objects.all()[:3]
-    all_comments = Comment.objects.all()
-    comments_count= all_comments.count()
+   
     
     title ='Home'
     context ={
         "images":images,
         "title":title,
         "iForm":iForm,
-        "three_comments":three_comments,
-        "comments_count":comments_count
+        # "userFollow": userFollow,
+    
     }
 
     return render(request, 'gram/index.html', context)
@@ -147,8 +148,6 @@ def single_post(request, id):
 
     current_user = request.user
     post = get_object_or_404(Image, id=id)
-    # comments= get_object_or_404(Comment, id=id)
-    # print(post)
     if request.method == 'POST':
         cForm = CommentForm(request.POST)
         if cForm.is_valid():
@@ -217,7 +216,7 @@ def editProfile(request, username):
     return render(request, 'profile/editProfile.html', context)
 
 
-def search_results(request):
+def search_user(request):
     if 'username' in request.GET and request.GET["username"]:
         search_username = request.GET.get("username")
         print(search_username)
@@ -227,8 +226,11 @@ def search_results(request):
 
         context = {
             "message":message,
-            "users": searched_users
+            "searched_users": searched_users
         }
+
+
+
 
         return render(request, 'gram/search.html', context)
 

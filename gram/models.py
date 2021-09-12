@@ -77,6 +77,15 @@ class Comment(models.Model):
 
 
     class Meta:
-        ordering = ['posted_on']
+        ordering = ['-posted_on']
+
+
+    
+class Follow(models.Model): 
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='username')
+    following = models.ManyToManyField(Profile, blank= True, related_name='user_following')
+    followers = models.ManyToManyField(Profile, blank= True, related_name='user_followers')
+
+    
 
 

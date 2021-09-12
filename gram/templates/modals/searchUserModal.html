@@ -9,6 +9,13 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
+                <form action="" method="post" enctype="multipart/form-data" novalidate>
+                    {%csrf_token%}
+
+                    {% bootstrap_form iForm%}
+                    <button class="btn btn-sm btn-success">Upload</button>
+
+                </form>
                 
                  
               </div>
