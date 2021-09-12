@@ -24,13 +24,12 @@
                   <h6 class="text--center mb-4">{{image.posted_by}}<span class="ms-1 text--primary fw-light">{{image.image_caption}}</span></h6>
 
                   <p class="small">{{image.posted_on}}</p>
-                  {% for comment in post.comment.all %}
-                  <div class="comment">
-                      <div class="ml-2"><strong>{{ comment.user.user.username }}</strong> <span class="text-secondary">{{ comment.comment }}</span>
-                      </div>
-                  </div>
+                  {% for comment in image.comments.all %}
+                    <div class="comments">
+                      <h6 class="text--center mb-4">{{comment.posted_by}}<span class="ms-1 text--primary fw-light">{{comment.comment}}</span></h6>
+                    </div>
                   {% empty %}
-
+                  <p>no comments</p>
                   {% endfor %}
                   
                   <hr>

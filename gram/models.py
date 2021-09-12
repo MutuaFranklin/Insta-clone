@@ -19,9 +19,14 @@ class Profile(models.Model):
     def save_profile(self):
             self.save()
 
+    # @classmethod
+    # def search_user(cls,user): 
+        # return User.objects.filter(user = user)
+
     @classmethod
-    def search_user(cls,user): 
-        return User.objects.filter(user = user)
+    def search_user(cls, username):
+        image= cls.objects.filter(user__username__icontains=username)
+        return image
 
 
 class Image(models.Model):
@@ -56,9 +61,9 @@ class Image(models.Model):
 
 
 class Comment(models.Model):
-    image = models.ForeignKey(Image, on_delete= models.CASCADE)
+    image = models.ForeignKey(Image, on_delete= models.CASCADE, related_name='comments')
     comment = models.TextField()
-    posted_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    posted_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
     posted_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

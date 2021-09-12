@@ -67,6 +67,18 @@ input title{
     justify-content: center;
 }
 
+.singlePost .comments{
+    display: flex !important;
+
+}
+
+.singlePost .comments a{
+    text-decoration: none;
+    color: black;
+    margin: 3px;
+}
+
+
 
 /* MY PROFILE */
 

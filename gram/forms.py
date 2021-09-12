@@ -46,7 +46,7 @@ class UpdateUserProfileForm(forms.ModelForm):
 class ImagePostForm(forms.ModelForm):
     class Meta:
         model = Image
-        fields = ('image', 'image_caption')
+        fields = ('image', 'image_name', 'image_caption')
 
 
 class CommentForm(forms.ModelForm):

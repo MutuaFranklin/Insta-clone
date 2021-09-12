@@ -1,0 +1,40 @@
+{%extends 'gram/base.html'%} 
+{% block content %}
+
+<div class="container  search_user">
+  <div class="container">
+
+    <div class="row mt-5">
+      {% if category_images %}
+        <h5>Found {{category_images|length }} of searched category {{message}}.</h5>
+      {% else %}
+        <h5> Found 0 images for the search category {{message}}.</h5>
+      {% endif %}
+
+    </div>
+
+      
+
+      <div class="row mt-3">
+          {%for image_item in category_images %}
+
+          <img src="{{image_item.image.url}}" class="card-img-top m-2" alt="image" style="height: 20rem; width: 25rem;"
+              data-bs-toggle="modal" data-bs-target="#imageEnlarge{{image_item.id}}">
+              <!-- <img src="{{image_item.image.url}}" style="background-color: blanchedalmond; height: 20rem;" alt=""> -->
+
+
+          {% empty %}
+          <div class="row">
+              <h5 class="text-center">There are No Image Items</h5>
+          </div>
+
+          {%endfor%}
+      </div>
+  </div>
+
+
+
+
+</div>
+
+{% endblock %}

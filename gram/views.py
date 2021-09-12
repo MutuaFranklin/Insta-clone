@@ -1,4 +1,5 @@
 from typing import ContextManager
+from django import contrib
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView
 from .models import Image, Profile, User, Comment
@@ -68,12 +69,18 @@ def home(request):
             return redirect('home')
     else:
         iForm = ImagePostForm()
+
+    three_comments = Comment.objects.all()[:3]
+    all_comments = Comment.objects.all()
+    comments_count= all_comments.count()
     
     title ='Home'
     context ={
         "images":images,
         "title":title,
-        "iForm":iForm
+        "iForm":iForm,
+        "three_comments":three_comments,
+        "comments_count":comments_count
     }
 
     return render(request, 'gram/index.html', context)
@@ -124,14 +131,6 @@ def userProfile(request, username):
     otherUser = get_object_or_404(User, username=username)
     userProfile = Profile.objects.get(user=otherUser)
     images = Image.objects.filter(posted_by = userProfile).order_by('-posted_on')
-
-
-    # profiles = get_object_or_404(User, username=username)
-    # posts = request.user.profile.posts.all()
-    # profile = Profile.objects.get(id =id)
-    # images = Image.objects.filter(profile = profile).order_by('-post_date')
-
-    # print(profile)
     
     title ='User Profile'
     context ={
@@ -149,7 +148,7 @@ def single_post(request, id):
     current_user = request.user
     post = get_object_or_404(Image, id=id)
     # comments= get_object_or_404(Comment, id=id)
-    print(post)
+    # print(post)
     if request.method == 'POST':
         cForm = CommentForm(request.POST)
         if cForm.is_valid():
@@ -160,10 +159,12 @@ def single_post(request, id):
             return redirect('home')
     else:
         cForm = CommentForm()
+    all_comments = Comment.objects.all()
+    comments_count= all_comments.count()
     context = {
         'image': post,
         'cForm': cForm,
-        # 'comments':comments
+        'comments_count':comments_count
         
     }
 
@@ -214,6 +215,27 @@ def editProfile(request, username):
         "myProfile":myProfile,
     }
     return render(request, 'profile/editProfile.html', context)
+
+
+def search_results(request):
+    if 'username' in request.GET and request.GET["username"]:
+        search_username = request.GET.get("username")
+        print(search_username)
+        searched_users = Profile.search_user(search_username)
+        print(searched_users)
+        message = f"{search_username}"
+
+        context = {
+            "message":message,
+            "users": searched_users
+        }
+
+        return render(request, 'gram/search.html', context)
+
+    else:
+        message = "You haven't searched for any term"
+        return render(request, 'gram/search.html',{"message":message})
+
 
 
 

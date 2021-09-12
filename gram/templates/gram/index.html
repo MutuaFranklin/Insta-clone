@@ -6,7 +6,11 @@
 
 {% block content%}
 
+
+
 <div class="container">
+    {% include "modals/searchUserModal.html" %}
+
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#imagePostModal">
         Make a Post
@@ -21,20 +25,42 @@
         <div class="card imagePostCard mt-3" style="width: 45rem;">
             <div class="header">
                 <img src="{{image_post.posted_by.profile_pic.url}}" class="m-3" height="40"  width="40"  style="border-radius: 50%;" alt="...">
-                <a href="{% url 'userProfile' image_post.posted_by %}"><h6>{{image_post.posted_by}}</h6></a>
+                {% if current_user == request.user %}
+                    <a href="{% url 'profile' image_post.posted_by %}"><h6>{{image_post.posted_by}}</h6></a>
+                {% else %}
+                    <a href="{% url 'userProfile' image_post.posted_by %}"><h6>{{image_post.posted_by}}</h6></a>
+                {% endif %}
             </div>
                 
           
             <img src="{{image_post.image.url}}" class="card-img-top" alt="...">
             <div class="card-body">
                 <div class="post-icons">
-                    <img src="{% static 'images/like.jpg' %}" alt=""  width="40">
-                    <a href="{% url 'comment' image_post.id%}"><img src="{% static 'images/commentIcon.jpg' %}"  alt="" width="40"></a>
+                    <img src="{% static 'images/like.jpg' %}" alt=""  width="43">
+                    <a href="{% url 'comment' image_post.id%}"><img src="{% static 'images/commentIcon.jpg' %}"  alt="" width="43"></a>
+                    <a href="{% url 'comment' image_post.id%}"><img src="{% static 'images/send.jpg' %}"  alt="" width="43"></a>
+
+                </div>
+                <div class="liked-by">
+                    <p class="fw-light">Liked by</p>
                 </div>
                 <div class="details">
                     <a href="{% url 'userProfile' image_post.posted_by %}"><h6>{{image_post.posted_by}}</h6></a>
                     <p class="card-text">{{image_post.image_caption}}</p> 
                 </div>
+                
+                <div class="post-comments">
+                    <p class="text-muted fw-light">view all {{image_post.comments.all.count}} comments</p>
+                  {% for comment in image_post.comments.all %}
+                  <div class="details">
+                    <a href="{% url 'userProfile' image_post.posted_by %}"><h6>{{comment.posted_by}}</h6></a>
+                    <p class="card-text fw-light">{{comment.comment}}</p> 
+                </div>
+                  {% empty %}
+                  <p>no comments</p>
+                  {% endfor %}
+                </div>
+               
                            
             </div>
             <ul class="list-group list-group-flush">
