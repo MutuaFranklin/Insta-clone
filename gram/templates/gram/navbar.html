@@ -27,7 +27,8 @@
           
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <img class="nav-profile" src="{{request.user.profile_pic.url}}" alt="">
+
+              <img class="nav-profile" src="{{request.user.posted_by.profile_pic.url}}" alt="" width="20">
               {{request.user}}
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
