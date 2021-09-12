@@ -21,6 +21,8 @@ urlpatterns=[
 
 
 
+    # path('follow/<follow_action>', views.follow, name='follow'),
+    # path('unFollow/<unFollow_action>', views.unFollow, name='unFollow'),
     # path('home/', postImages.as_view(), name = 'home'),
     # re_path(r'profile', views.userProfile, name='profile'),
     # re_path(r'profile/(?P<user_id>\d+)',views.userProfile,name = 'profile'),
