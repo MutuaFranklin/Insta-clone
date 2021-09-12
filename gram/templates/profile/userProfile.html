@@ -12,16 +12,37 @@
 
                 </div>
             <div class="col-md-7 userDetails">
-                <div class="n mb-3" >
-                    <span class="me-5">{{userProfile.user.username}}</span>
-                    <button class="message"  data-bs-toggle="modal" data-bs-target="#updateProfileModal">Message</button>
+                <div class="n mb-3 d-flex" >
+                    <span class="me-3">{{userProfile.user.username}}</span>
+                    {% if is_followed %}
+
+                    <button class="message"  data-bs-toggle="modal">Message</button>
+
+                    <!-- <a href=""><button class="unfollow"  data-bs-toggle="modal">Unfollow</button></a> -->
+
+
+                    {% else %}
+                        {% if request.user != userProfile.user%}
+                        <form method="post">
+                            {%csrf_token%}
+                            <input hidden name="that_user_id" value="{{userProfile.user.id}}">
+                            <button class="btn btn-sm btn-primary" type="submit"> follow</button>
+                        </form>
+                        {% else %}
+                        <button class="edit-profile">Edit profile</button>
+
+                        {% endif %}
+                    <!-- <a href=""><button class="unfollow"  data-bs-toggle="modal">Follow</button></a> -->
+
+
+                    {% endif %}
 
 
                 </div>
                 <div class="d mb-3">
                     <span class="me-3"><strong>0 </strong>posts</span>
-                    <span class="me-3"><strong>0 </strong>followers</span>
-                    <span class="me-3"><strong>0 </strong>following</span>
+                    <span class="me-3"><strong>{{userProfile.followers.count}} </strong>followers</span>
+                    <span class="me-3"><strong>{{userProfile.following.count}} </strong>following</span>
                     
                 </div>
                 <div class="name">
