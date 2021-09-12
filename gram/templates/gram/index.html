@@ -21,7 +21,7 @@
         <div class="card imagePostCard mt-3" style="width: 45rem;">
             <div class="header">
                 <img src="{{image_post.posted_by.profile_pic.url}}" class="m-3" height="40"  width="40"  style="border-radius: 50%;" alt="...">
-                <a href=""><h6>{{image_post.posted_by}}</h6></a>
+                <a href="{% url 'userProfile' image_post.posted_by %}"><h6>{{image_post.posted_by}}</h6></a>
             </div>
                 
           
@@ -32,7 +32,7 @@
                     <a href="{% url 'comment' image_post.id%}"><img src="{% static 'images/commentIcon.jpg' %}"  alt="" width="40"></a>
                 </div>
                 <div class="details">
-                    <a href=""><h6>{{image_post.posted_by}}</h6></a>
+                    <a href="{% url 'userProfile' image_post.posted_by %}"><h6>{{image_post.posted_by}}</h6></a>
                     <p class="card-text">{{image_post.image_caption}}</p> 
                 </div>
                            

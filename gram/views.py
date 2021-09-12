@@ -93,9 +93,16 @@ def profile(request, username):
     current_user = request.user
     profiles = get_object_or_404(User, username=username)
     myProfile = Profile.objects.get(user=current_user)
-    me = Profile.objects.get(user=current_user)
+    images = Image.objects.filter(posted_by = myProfile).order_by('-posted_on')
 
-    images = Image.objects.filter(posted_by = me).order_by('-posted_on')
+
+    if request.method == 'POST':
+        prof_form = UpdateUserProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        if prof_form.is_valid():
+            prof_form.save()
+            return redirect('profile')
+        user_form = UpdateUserForm(instance=request.user)
+        prof_form = UpdateUserProfileForm(instance=request.user.profile)
 
     # print(images)
 
@@ -106,27 +113,32 @@ def profile(request, username):
         "title":title,
         "profiles":profiles,
         "myProfile":myProfile,
-        "images":images
+        "images":images,
+       
     }
 
     return render(request, 'profile/myProfile.html', context)
 
 @login_required(login_url='login')
-def myProfile(request, id):
-    # profiles = get_object_or_404(User, username=username)
-    # users = Profile.objects.all()
-    # posts = request.user.profile.posts.all()
-    profile = Profile.objects.get(id =id)
-    images = Image.objects.filter(profile = profile).order_by('-post_date')
+def userProfile(request, username):
+    otherUser = get_object_or_404(User, username=username)
+    userProfile = Profile.objects.get(user=otherUser)
+    images = Image.objects.filter(posted_by = userProfile).order_by('-posted_on')
 
-    print(profile)
+
+    # profiles = get_object_or_404(User, username=username)
+    # posts = request.user.profile.posts.all()
+    # profile = Profile.objects.get(id =id)
+    # images = Image.objects.filter(profile = profile).order_by('-post_date')
+
+    # print(profile)
     
-    title ='Profile'
+    title ='User Profile'
     context ={
         "title":title,
-        "profiles":profile,
+        "otherUser":otherUser,
+        "userProfile":userProfile,
         "images": images
-        # "userProfiles":userProfiles
     }
 
     return render(request, 'profile/userProfile.html', context)
@@ -185,4 +197,23 @@ def add_comment(request, id):
         
     }
     return render(request, 'gram/singlePost.html', context)
+
+
+def editProfile(request, username):
+    current_user = request.user
+    profiles = get_object_or_404(User, username=username)
+    myProfile = Profile.objects.get(user=current_user)
+
+
+
+
+    title="Edit profile"
+    context={
+        "title":title,
+        "profiles":profiles,
+        "myProfile":myProfile,
+    }
+    return render(request, 'profile/editProfile.html', context)
+
+
 

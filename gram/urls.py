@@ -14,6 +14,10 @@ urlpatterns=[
     path('comment/<int:id>',single_post, name='comment'),
     path('logout/',views.logout, name='logout'),
     path('profile/<username>/', views.profile, name='profile'),
+    path('', views.editProfile, name='edit-profile'),
+    path('userprofile/<username>/', views.userProfile, name='userProfile'),
+
+
 
     # path('home/', postImages.as_view(), name = 'home'),
     # re_path(r'profile', views.userProfile, name='profile'),

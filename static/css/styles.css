@@ -54,6 +54,9 @@
     margin: 3px;
 }
 
+
+
+
 input title{
     display: none
 }
@@ -76,5 +79,12 @@ input title{
 
 
 
+
+
+.nav{
+    display: flex;
+    justify-content: center;
+
+}
 
 
