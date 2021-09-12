@@ -13,8 +13,8 @@ class Profile(models.Model):
     name = models.CharField(blank=True, max_length=120)
     profile_pic = models.ImageField(upload_to = 'instaPhotos',default='avartar.jpg')
     bio = models.TextField(blank= True)
-    followers = models.IntegerField(default=0)
-    following = models.IntegerField(default=0)
+    followers = models.ManyToManyField('Follow',related_name="user_followers", blank=True)
+    following = models.ManyToManyField('Follow',related_name="user_following",blank=True)
 
     def __str__(self):
         return self.user.username
@@ -94,7 +94,7 @@ class Comment(models.Model):
 
 
     
-class Follow(models.Model): 
+class Follow(models.Model):
     following = models.ManyToManyField(Profile, blank= True, related_name='user_following')
     followers = models.ManyToManyField(Profile, blank= True, related_name='user_followers')
 
