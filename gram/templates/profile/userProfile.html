@@ -3,52 +3,61 @@
 {% block content%}
 
 <div class="container profile">
-    <div class="r profile-details">
-        <div class="col-md-12  mt-4">
-            <div class="row details">
-                <div class=" col-md-5 userImage">
+
+        <div class="col-md-9">
+            <div class="row details mt-4">
+                <div class=" col-md-4">
 
                     <img class="profilePic" src="{{userProfile.profile_pic.url}}" alt="" height="150rem" width="150rem"
                         style="border-radius: 50%;">
 
                 </div>
-                <div class="col-md-7 userDetails">
+                <div class="col-md-8 userDetails">
                     <div class="n mb-3 d-flex">
                         <span class="me-3">{{userProfile.user.username}}</span>
+
+                        
                         {% if request.user != userProfile.user %}
 
-                            {% if request.user != userProfile.followers %}
+                            {% if follow %} 
+                            <form method="post" action="{% url 'follow_actions'%}">
+                                {%csrf_token%}
+                                <button class="message me-1">Message</button>
+                                <input hidden name="userProf_id" value="{{userProfile.user.id}}">
+                                <button class="unfollow">Unfollow</button>
 
-                            <form method="post">
+                            </form>
+
+
+
+                            {% else %}
+                            <form method="post" action="{% url 'follow_actions'%}">
                                 {%csrf_token%}
                                 <input hidden name="userProf_id" value="{{userProfile.user.id}}">
                                 <button class="btn btn-sm btn-primary" type="submit"> follow</button>
                             </form>
 
-
-                            {% else %}
-
-                            <button class="message">Message</button>
-                            <button class="edit-profile">Unfollow</button>
+                           
 
                             {% endif %}
 
                         {% else %}
-                        <button class="edit-profile">Edit profile</button>
+                        <button class="edit-profile" data-bs-toggle="modal" data-bs-target="#profUpdateModal">Edit profile</button>
 
+                            {% include "modals/updateProfileModal.html" %}
 
                         {% endif %}
 
 
                     </div>
                     <div class="d mb-3">
-                        <span class="me-3"><strong>{{images.image.count}} </strong>posts</span>
+                        <span class="me-3"><strong>{{images.count}} </strong>posts</span>
                         <span class="me-3"><strong>{{userProfile.followers.count}} </strong>followers</span>
                         <span class="me-3"><strong>{{userProfile.following.count}} </strong>following</span>
 
                     </div>
                     <div class="name">
-                        <h6>{{userProfile.name}}</h6>
+                        <h6>{{ userProfile.user.first_name}} {{ userProfile.user.last_name }}</h6>
                         <p class="text-muted ">{{userProfile.bio}}</p>
                     </div>
 
@@ -66,10 +75,10 @@
                     <span class="me-4">TAGGED</span>
 
                 </div>
-                <div class="row userposts">
+                <div class=" userposts">
                     {% for image in images %}
 
-                    <img class="mb-3" src="{{image.image.url}}" alt="" style="width: 19rem; height: 19rem;">
+                    <a href="{% url 'comment' image.id%}"><img class="mb-3" src="{{image.image.url}}" alt="" style="width: 19rem; height: 19rem;"></a>
 
 
 
@@ -83,7 +92,6 @@
 
 
 
-        </div>
 
 
     </div>
