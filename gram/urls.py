@@ -2,7 +2,7 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import re_path, path, include
-from .views import logout, postImageDetails, postImages, signIn, SinglePostView, single_post
+from .views import follow_actions, logout, postImageDetails, postImages, postLike, signIn, SinglePostView, single_post
 
 
 urlpatterns=[
@@ -17,6 +17,9 @@ urlpatterns=[
     path('', views.editProfile, name='edit-profile'),
     path('userprofile/<username>/', views.userProfile, name='userProfile'),
     path('search/', views.search_user, name='search_user'),
+    path('like/<int:pk>', postLike, name = 'post_like'),
+    path('follow', follow_actions, name = 'follow_actions'),
+
 
 
 
