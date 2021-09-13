@@ -74,7 +74,7 @@ Run source virtual/bin/activate to activate the virtual environment and python m
 
 ## Live link
 
-Live link: [Insta-clone live link](https://myphotofolio.herokuapp.com/)
+Live link: [Insta-clone live link](https://instabyfrank.herokuapp.com/)
 
 ## Support and contact details
 
