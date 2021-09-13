@@ -33,12 +33,34 @@
                   {% endfor %}
                   
                   <hr>
-                  <div class="post-icons">
-                    <img src="{% static 'images/like.jpg' %}" alt=""  width="40">
-                    <a href=""><img src="{% static 'images/commentIcon.jpg' %}"  alt="" width="40"></a>
+                  <div class="post-icons d-flex">
+                    <form action="{% url 'post_like' image.pk %}" method="post">
+                      {% csrf_token %}
+                      {% if profile in image.likes.all %}
+                          <button class ='btn btn-danger' type="submit" name = 'image_post_id' value="{{image.id}}">
+                            <i class="far fa-heart "></i>  
+                            <!-- <img src="{% static 'images/likee.png' %" alt="" width="43"> -->
+                        
+                          </button>
+                                              
+                          {% else %}
+                          <button class = 'btn' type="submit" name = 'image_post_id' value="{{image.id}}" >
+                            <!-- <img src="{% static 'images/like.jpg' %}" alt="" width="43"> -->
+
+                            <i class="far fa-heart"></i>                          
+                          </button>
+                          {{object.likes.all}}
+
+                      {% endif %}
+                      
+                  </form>
+                    <!-- <img src="{% static 'images/like.jpg' %}" alt=""  width="40"> -->
+                    <a href=""><img src="{% static 'images/commentIcon.jpg' %}"  alt="" width="40" style="border: none;"></a>
                   </div>
+                  {{image.likes.count}} likes  
+
                   <hr>
-                  <form action="" method="post">
+                  <form action="" method="post" class="d-flex">
                     {% csrf_token %}
 
 
@@ -46,7 +68,7 @@
 
                     
 
-                    <button class="btn btn-sm btn-success">Post</button>
+                    <button class="btn btn-sm btn-success ms-1" style="height: 40px; margin-top: 7%;">Post</button>
                     
                 </form>
 

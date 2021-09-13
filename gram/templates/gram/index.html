@@ -8,7 +8,7 @@
 
 
 
-<div class="container">
+<div class="container index">
 
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#imagePostModal">
@@ -19,7 +19,7 @@
 
 
     {% for image_post in images %}
-        <div class="col-md-8">
+        <div class="col-md-7 card-holder">
             
             <div class="card imagePostCard mt-3" style="width: 45rem;">
                 <div class="header">
@@ -34,17 +34,54 @@
             
                 <a href="{% url 'comment' image_post.id%}"><img src="{{image_post.image.url}}" style="max-height: 25rem;" class="card-img-top" alt="...">
                 <div class="card-body">
-                    <div class="post-icons" id="post-icons">
-                        <a><img src="{% static 'images/likee.png' %}" id="like" alt="" onClick="return dislike();"  width="47"></a>
-                        <a><img src="{% static 'images/like.jpg' %}" id="dislike" alt="" onClick="return like();"  width="43"></a>
+                    <div class="post-icons d-flex" id="post-icons">
+                        <form action="{% url 'post_like' image_post.pk %}" method="post">
+                            {% csrf_token %}
+                            {% if profile in image_post.likes.all %}
+                                <button class ='btn btn-danger' type="submit" name = 'image_post_id' value="{{image_post.id}}">
+                                  <i class="far fa-heart mt-2 " style="font-size: 20px;"></i>  
+                                  <!-- <img src="{% static 'images/likee.png' %" alt="" width="43"> -->
+                              
+                                </button>
+                                                    
+                                {% else %}
+                                <button class = 'btn' type="submit" name = 'image_post_id' value="{{image_post.id}}" >
+                                  <!-- <img src="{% static 'images/like.jpg' %}" alt="" width="43"> -->
+                                  <i class="far fa-heart mt-2"  style="font-size: 23px;"></i>                          
+                                </button>
+                                <!-- {{image_post.likes.all}} -->
+      
+                            {% endif %}
+                            
+                        </form>
+                        <!-- <form action="" method="post">
+                            {% csrf_token %}
+                            {% if user in object.likes.all %}
+                                <a class ='' type="submit" name = 'image_post.id' value="{{image_post.posted_by.id}}">
+                                    <img src="{% static 'images/likee.png' %" alt="" width="43">
+                                </a>
+                            {% else %}
+                                <a class = '' type="submit" name = 'image_post.id' value="{{image_post.posted_by.id}}">
+                                    <img src="{% static 'images/like.jpg' %}" alt="" width="43">
+                                </a>
+                            {% endif %}
+                            
+                        </form> -->
+                    
                         <a href="{% url 'comment' image_post.id%}"><img src="{% static 'images/commentIcon.jpg' %}"  alt="" width="43"></a>
                         <a href=""><img src="{% static 'images/send.jpg' %}"  alt="" width="43"></a>
-
+                        
                     </div>
                     <div class="liked-by">
-                        <p class="fw-light">Liked by</p>
+                        {{image_post.likes.count}} likes
+                        <p class="fw-light">Liked by {{image_post.like.user}}</p>
+
+                        {% for likers in image_post.likes.all %}
+                         <p>{{likers.likes}}</p>
+
+                        {% endfor %}
                     </div>
-                    <div class="details">      <script src="{% static 'js/main.js'%}"></script>
+                    <div class="details"> 
 
                         <a href="{% url 'userProfile' image_post.posted_by %}"><h6>{{image_post.posted_by}}</h6></a>
                         <p class="card-text">{{image_post.image_caption}}</p> 
@@ -56,7 +93,7 @@
                         {% endif %}
                         {% for comment in image_post.comments.all %}
                         <div class="details">
-                            <a href="{% url 'userProfile' image_post.posted_by %}"><h6>{{comment.posted_by}}</h6></a>
+                            <a href="{% url 'userProfile' comment.posted_by %}"><h6>{{comment.posted_by}}</h6></a>
                             <p class="card-text fw-light">{{comment.comment}}</p> 
                         </div>
                         

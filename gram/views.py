@@ -7,6 +7,10 @@ from .forms import AddUserProfileForm, UserRegistrationForm, ImagePostForm, Comm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.http import HttpResponseRedirect
+from django.urls.base import reverse
+from .email import send_welcome_email
+
 
 
 
@@ -21,11 +25,12 @@ def register(request):
         if reg_form.is_valid():
             reg_form.save()
             user = reg_form.cleaned_data.get('username')
+            email = reg_form.cleaned_data['email']
             messages.success(request, 'Account was created for ' + user)
+            send_welcome_email(user,email)
             return redirect('login')
         else:
             reg_form = UserRegistrationForm()
-            pForm = AddUserProfileForm()
 
     title = 'Registration'
     # context ={
@@ -64,12 +69,13 @@ def home(request):
     current_user = request.user
     images = Image.objects.all().order_by('-posted_on')
     user = User.objects.get(username=current_user)
-    profUser = Profile.objects.get(user=current_user)
+    myProfile = Profile.objects.get(user=current_user)
 
-
-    # userFollow = Follow.objects.get(user=user)
-    # images = Image.objects.get(posted_by=userFollow.username).order_by('-posted_on')
-
+    # profUser = Profile.objects.get(followers = request.user)
+    # followed_post =Image.objects.filter(posted_by= profUser)
+    # print(followed_post)
+   
+    
    
 
     if request.method == 'POST':
@@ -90,6 +96,9 @@ def home(request):
         "title":title,
         "iForm":iForm,
         "user":user,
+        "profile":myProfile
+        # "followed_post":followed_post
+        # "post":post
     
     }
 
@@ -139,39 +148,69 @@ def profile(request, username):
 @login_required(login_url='login')
 def userProfile(request, username):
     otherUser = get_object_or_404(User, username=username)
+
+    # otherUser2= get_object_or_404(Profile, user=username)
     userProfile = Profile.objects.get(user=otherUser)
+    myProfile = Profile.objects.get(user=request.user)
     images = Image.objects.filter(posted_by = userProfile).order_by('-posted_on')
+    
+    
     title ='User Profile'
+
+    # print(userProfile) 
+    # 
+    
+    if userProfile.user in myProfile.following.all():
+        follow = True
+    else:
+        follow = False
+
+    if myProfile.user in userProfile.followers.all():
+        follower = True
+    else:
+        follower = False
+     
+
+    if_following = Profile.objects.filter(following = request.user).exists()
+    if_followed = Profile.objects.filter(followers =userProfile.user).exists()
+
+    if (if_following):
+        is_followed = True
+    else:
+        is_followed = False
+    print(is_followed)
+
+    if (if_followed):
+        is_follower = True
+    else:
+        is_follower = False
+    print(is_follower)
+
     context ={
         "title":title,
         "otherUser":otherUser,
         "userProfile":userProfile,
         "images": images,
+        "is_followed":if_followed,
+        "is_follower": is_follower,
+        "follow":follow,
+        "follower": follower,        
+        # "is_following":if_following,
         
     }
 
-    if request.method == 'POST':
-        if 'userProf_id' in request.POST:
-            userProf_id = request.POST.get('userProf_id')
-            userProf = User.objects.get(id=userProf_id) 
 
-            myProf = Profile.objects.get(user=request.user)
-            myProf.following.add(userProf) 
-            myProf.save()
 
-            oProf = Profile.objects.get(user=userProf)
-            oProf.followers.add(request.user)
-            oProf.save()
-    
-    
-
-    return render(request, 'profile/userProfile.html',  locals())
+    return render(request, 'profile/userProfile.html',  context)
 
 
 def single_post(request, id):
 
     current_user = request.user
     post = get_object_or_404(Image, id=id)
+
+    currentProf = get_object_or_404(Profile, user=request.user)
+    
     if request.method == 'POST':
         cForm = CommentForm(request.POST)
         if cForm.is_valid():
@@ -179,7 +218,8 @@ def single_post(request, id):
             new_comment.image = post
             new_comment.posted_by = current_user
             new_comment.save()
-            return redirect('home')
+            return HttpResponseRedirect(reverse('comment', args=[int(id)]))
+            # return redirect('home')
     else:
         cForm = CommentForm()
     all_comments = Comment.objects.all()
@@ -187,7 +227,9 @@ def single_post(request, id):
     context = {
         'image': post,
         'cForm': cForm,
-        'comments_count':comments_count
+        'comments_count':comments_count,
+        'user':current_user,
+        'profile':currentProf
         
     }
 
@@ -220,6 +262,8 @@ def add_comment(request, id):
         'cForm': cForm,
         
     }
+
+
     return render(request, 'gram/singlePost.html', context)
 
 
@@ -263,4 +307,35 @@ def search_user(request):
         return render(request, 'gram/search.html',{"message":message})
 
 
+def postLike(request, pk):
+    profile = Profile.objects.get(user=request.user)
+    image_post = get_object_or_404(Image, id = request.POST.get('image_post_id'))
+    image_post.likes.add(profile.user.id)
 
+    return redirect(request.META.get('HTTP_REFERER'))
+
+def follow_actions(request):
+    if request.method == 'POST':
+            if 'userProf_id' in request.POST:
+                userProf_id = request.POST.get('userProf_id')
+                userProf = User.objects.get(id=userProf_id) 
+
+                myProf = Profile.objects.get(user=request.user)
+                oProf = Profile.objects.get(user=userProf)
+
+
+                if  oProf.user in myProf.following.all():
+                    myProf.following.remove(oProf.user)
+                    myProf.save()
+                else:
+                    myProf.following.add(userProf) 
+                    myProf.save()
+
+                if  myProf.user in oProf.followers.all():
+                    oProf.followers.remove(oProf.user)
+                    oProf.save()
+                else:
+                    oProf.followers.add(oProf.user)
+                    oProf.save()
+
+                return redirect(request.META.get('HTTP_REFERER'))

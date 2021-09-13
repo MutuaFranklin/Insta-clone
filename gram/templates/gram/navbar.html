@@ -10,14 +10,16 @@
       </button>
       <form class="d-flex" style="margin-left: 30%;"  role="search" action="{% url 'search_user'%}">
         <input class="form-control me-2" type="search" name="username"  placeholder="Search" aria-label="Search">
-        <!-- <button class="btn btn-outline-danger" type="submit" >Search</button> -->
+        <!-- <button type="submit" class="btn btn-default">
+          <i class="fas fa-search"></i>     
+        </button>       -->
       </form>
       <!-- data-bs-toggle="modal" data-bs-target="#searchUserModal" -->
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 
           <li class="nav-item">
-            <a href="{% url 'home' %}"><img src="{% static 'images/instahome.png' %}" alt="" width="30rem" class="D-block mx-auto"></a>
+            <a href="{% url 'home' %}"><img src="{% static 'images/instahome.png' %}" alt="" width="30rem" class="D-block mx-auto mt-2"></a>
           </li>
           <li class="nav-item">
           </li>
@@ -29,18 +31,15 @@
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 
               <img class="nav-profile" src="{{request.user.posted_by.profile_pic.url}}" alt="" width="20">
-              {{request.user}}
+              <i class="fas fa-id-badge" style="font-size: 30px;"></i>
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="{% url 'profile' user.username %}">Profile</a></li>
-              <li><a class="dropdown-item" href="/accounts/password/change">Settings</a></li>
+              <li><a class="dropdown-item" href="{% url 'userProfile' user.username %}">{{request.user}}</a></li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="{%url 'logout'%}">Logout</a></li>
             </ul>
           </li> 
-          <li class="nav-item">
-            <a class="nav-link disabled">Disabled</a>
-          </li>
+          
         </ul>
         
       </div>

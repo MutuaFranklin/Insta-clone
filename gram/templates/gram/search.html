@@ -1,20 +1,15 @@
 {%extends 'gram/base.html'%} 
 {% block content %}
 
-<div class="container  search_user">
-  <div class="container">
-
-    
-      
-
-      <div class="col-md-8 mt-5">
+<div class="container  search-user">
+      <div class="col-md-5 mt-5">
         {%for user in searched_users %}
           <div class="col-md-4">
               <div class="row">
                   <div class="col-md-4">
                       <img src="{{user.profile_pic.url}}" alt="" style="width:4rem; height: 4rem; border-radius: 50%; border: 3px solid rgb(206, 126, 243);">
                   </div>
-                  <div class="col-md-8">
+                  <div class="col-md-8 mt-3">
                       <a href="{% url 'userProfile' user.user.username %}"><p>{{user.user.username }}</p></a>
                   </div>
               </div>
@@ -28,10 +23,6 @@
          
 
       </div>
-  </div>
-
-
-
 
 </div>
 
