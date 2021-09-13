@@ -15,17 +15,17 @@ import os
 import django_heroku
 import dj_database_url
 from decouple import config,Csv
-# import cloudinary
-# import cloudinary.uploader
-# import cloudinary.api
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 
-# adding config
-# cloudinary.config( 
-#   cloud_name = "dlqnalelc", 
-#   api_key = "574855723933665", 
-#   api_secret = "FUIyPX8RTEtB0_dphqdn6b-zzQw" 
-# )
+#adding config
+cloudinary.config( 
+  cloud_name = "dlqnalelc", 
+  api_key = "574855723933665", 
+  api_secret = "FUIyPX8RTEtB0_dphqdn6b-zzQw" 
+)
 
 
 # Email configurations remember to install python-decouple
@@ -73,7 +73,7 @@ INSTALLED_APPS = [
     'bootstrap5',
     # 'registration',
     'crispy_forms',
-    # 'cloudinary',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
