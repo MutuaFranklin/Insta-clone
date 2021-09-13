@@ -133,7 +133,7 @@ if config('MODE')=="dev":
 else:
    DATABASES = {
        'default': dj_database_url.config(
-           default=config('DJANGO_DB_URL')
+           default=config('INSTA_DB')
        )
    }
 
