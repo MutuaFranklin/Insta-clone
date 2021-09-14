@@ -30,11 +30,12 @@ class Profile(models.Model):
     def save_profile(self):
             self.save()
 
+
+    @classmethod
+    def update_prof_bio(cls, id,bio):
+        return cls.objects.filter(id = id).update(bio=bio)
+
         
-
-   
-   
-
     @classmethod
     def search_user(cls, username):
         image= cls.objects.filter(user__username__icontains=username)
@@ -62,10 +63,10 @@ class Image(models.Model):
     def delete_image(self):
         self.delete()
 
+    @classmethod
+    def update_caption(cls, id,updated_caption):
+        return cls.objects.filter(id = id).update(image_caption=updated_caption)
 
-    def update_caption(self, updated_caption):
-        self.caption = updated_caption
-        self.save()
 
     def total_likes(self):
         return self.likes.count()
