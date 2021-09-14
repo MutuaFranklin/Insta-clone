@@ -341,10 +341,10 @@ def follow_actions(request):
                     myProf.save()
 
                 if  myProf.user in oProf.followers.all():
-                    oProf.followers.remove(oProf.user)
+                    oProf.followers.remove(myProf.user)
                     oProf.save()
                 else:
-                    oProf.followers.add(oProf.user)
+                    oProf.followers.add(myProf.user)
                     oProf.save()
 
                 return redirect(request.META.get('HTTP_REFERER'))
