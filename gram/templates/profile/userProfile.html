@@ -20,9 +20,10 @@
                         {% if request.user != userProfile.user %}
 
                             {% if follow %} 
+                            <button class="message me-1">Message</button>
+
                             <form method="post" action="{% url 'follow_actions'%}">
                                 {%csrf_token%}
-                                <button class="message me-1">Message</button>
                                 <input hidden name="userProf_id" value="{{userProfile.user.id}}">
                                 <button class="unfollow">Unfollow</button>
 
