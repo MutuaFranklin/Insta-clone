@@ -38,8 +38,7 @@ class Profile(models.Model):
         
     @classmethod
     def search_user(cls, username):
-        image= cls.objects.filter(user__username__icontains=username)
-        return image
+        return cls.objects.filter(user__username__icontains=username)
 
 
 class Image(models.Model):
@@ -53,6 +52,7 @@ class Image(models.Model):
 
     def __str__(self):
         return self.image_name
+
 
     def total_likes(self):
         return self.likes.count()

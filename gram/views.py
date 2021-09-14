@@ -67,13 +67,21 @@ def logout(request):
 
 def home(request):
     current_user = request.user
-    images = Image.objects.all().order_by('-posted_on')
     user = User.objects.get(username=current_user)
     myProfile = Profile.objects.get(user=current_user)
+    images = Image.objects.all().order_by('-posted_on')
+    my_posts=Image.objects.filter(posted_by = myProfile)
+    profiles=Profile.objects.all()
 
-    # profUser = Profile.objects.get(followers = request.user)
-    # followed_post =Image.objects.filter(posted_by= profUser)
-    # print(followed_post)
+    # following_ids = request.user.following.values_list('id',flat=True) 
+
+
+    # followed_posts=Image.objects.filter(posted_by__in = request.user.followers.all())
+    followed_posts=Image.objects.filter(posted_by__in = current_user.followers.all()).all() 
+    all_images = my_posts|followed_posts
+    print(followed_posts)
+
+  
    
     
    
@@ -93,18 +101,26 @@ def home(request):
 
     title ='Home'
     context ={
+        # "images":all_images,
         "images":images,
         "title":title,
         "iForm":iForm,
         "user":user,
         'cForm': cForm,
-        "profile":myProfile
-        # "followed_post":followed_post
-        # "post":post
-    
+        "profile":myProfile,
+        "profiles":profiles
+      
     }
 
+
     return render(request, 'gram/index.html', context)
+
+
+def suggestedProfile(request):
+
+
+    return render(request, 'profile/suggestedProfiles.html')
+
 
 
 class postImages(ListView):

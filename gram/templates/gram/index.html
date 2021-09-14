@@ -16,8 +16,6 @@
     </button>
 
     {% include "modals/imagePostModal.html" %}
-
-
     {% for image_post in images %}
         <div class="col-md-7 card-holder">
             
@@ -119,11 +117,15 @@
 
     {% empty %}
     <div class="row">
-        <h6 class="text-center">There No Image Items</h6>
+        <h6 class="text-center mt-5">There No Image Items</h6>
+        <p>You can follow the following to view posts</p>
+    
+    
     </div>
+            
 
-    {%endfor%}
-
+    {% endfor %}
+    
 
 </div>
 

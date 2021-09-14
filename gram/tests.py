@@ -5,7 +5,7 @@ from .models import Image, Comment, Profile
 class TestAppModelsClass(TestCase):
     def setUp(self):
         self.frank = User(id = 134, username = "frank", email = "frankngumbi@gmail.com",password = "1234567")
-        self.frank.save()
+        # self.frank.save()
 
         self.profile = Profile(id= 5, user= self.frank, bio='myself',  profile_pic='frank.jpg')
         self.profile.save()
@@ -38,6 +38,8 @@ class TestAppModelsClass(TestCase):
     def test_instance(self):
             self.assertTrue(isinstance(self.comment, Comment))
 
+
+
     # Save method
     def test_save_Profile(self):
         self.profile.save()
@@ -63,10 +65,10 @@ class TestAppModelsClass(TestCase):
         update_image = Image.objects.get(id = image)
         self.assertEqual(update_image.image_caption,'I want this') 
 
-    def test_update_image_caption(self):
-        self.honda.save()
-        self.honda.update_caption('I want this')
-        self.assertEqual(self.honda.caption, 'I want this')
+    # def test_update_image_caption(self):
+    #     self.honda.save()
+    #     self.honda.update_caption('I want this')
+    #     self.assertEqual(self.honda.caption, 'I want this')
 
     def test_update_profile(self):
         self.profile.save()
@@ -94,8 +96,9 @@ class TestAppModelsClass(TestCase):
 
     #search
     def test_search_user(self):
-        user = Profile.search_user(self.frank)
-        self.assertEqual(len(user), 1)
+        self.frank.save()
+        user = Profile.search_user('frank')
+        self.assertTrue(len(user) == 1)
 
 
    
