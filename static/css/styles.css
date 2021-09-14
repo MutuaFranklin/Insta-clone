@@ -136,4 +136,17 @@ a{
 
 }
 
+.suggested{
+    margin-top: 2%;
+    text-align: center;
+}
+.suggested-prof{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
 

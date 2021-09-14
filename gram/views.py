@@ -71,7 +71,6 @@ def home(request):
     myProfile = Profile.objects.get(user=current_user)
     images = Image.objects.all().order_by('-posted_on')
     my_posts=Image.objects.filter(posted_by = myProfile)
-    profiles=Profile.objects.all()
 
     # following_ids = request.user.following.values_list('id',flat=True) 
 
@@ -101,14 +100,13 @@ def home(request):
 
     title ='Home'
     context ={
-        # "images":all_images,
-        "images":images,
+        "images":all_images,
+        # "images":images,
         "title":title,
         "iForm":iForm,
         "user":user,
         'cForm': cForm,
         "profile":myProfile,
-        "profiles":profiles
       
     }
 
@@ -117,9 +115,18 @@ def home(request):
 
 
 def suggestedProfile(request):
+    profiles=Profile.objects.all()
+
+    context={
+
+        "profiles":profiles,
+        
+    }
+
+    print(profiles)
 
 
-    return render(request, 'profile/suggestedProfiles.html')
+    return render(request, 'profile/suggestedProfiles.html', context)
 
 
 

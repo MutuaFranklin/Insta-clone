@@ -16,6 +16,7 @@ urlpatterns=[
     path('logout/',views.logout, name='logout'),
     path('profile/<username>/', views.profile, name='profile'),
     path('userprofile/<username>/', views.userProfile, name='userProfile'),
+    re_path(r'suggested_users/', views.suggestedProfile, name='suggested_users'),
     path('search/', views.search_user, name='search_user'),
     path('like/<int:pk>', postLike, name = 'post_like'),
     path('follow', follow_actions, name = 'follow_actions'),

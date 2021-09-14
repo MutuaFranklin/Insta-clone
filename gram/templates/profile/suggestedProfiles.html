@@ -5,7 +5,29 @@
 <div class="container profile">
 
         <div class="col-md-9">
+            <div class="header suggested">
+                <h5>Suggested users</h5>
+            </div>
             <div class="row details mt-4">
+                
+                {% for profile in profiles %}
+
+
+                <div class="card  m-3" style="width: 18rem;">
+                    <img src="{{profile.profile_pic.url}}" class="card-img-top" height="200" alt="...">
+                    <div class="card-body suggested-prof">
+                      <h5 class="card-title">{{profile.user}}</h5>
+                      <a href="{% url 'userProfile' profile.user %}" class="btn btn-primary">View Profile</a>
+                    </div>
+                  </div>
+
+
+                {% empty %}
+
+                <p>no profiles</p>
+
+
+                {% endfor %}
                 
                
             
