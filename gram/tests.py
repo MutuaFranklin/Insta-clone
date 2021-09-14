@@ -19,6 +19,7 @@ class TestAppModelsClass(TestCase):
    
     # Teardown
     def tearDown(self):
+        User.objects.all().delete()
         Image.objects.all().delete()
         Profile.objects.all().delete()
         Comment.objects.all().delete()

@@ -32,7 +32,7 @@
                 </div>
                     
             
-                <a href="{% url 'comment' image_post.id%}"><img src="{{image_post.image.url}}" style="max-height: 25rem;" class="card-img-top" alt="...">
+                <a href="{% url 'comment' image_post.id %}"><img src="{{image_post.image.url}}" style="max-height: 25rem;" class="card-img-top" alt="...">
                 <div class="card-body">
                     <div class="post-icons d-flex" id="post-icons">
                         <form action="{% url 'post_like' image_post.pk %}" method="post">
@@ -54,19 +54,7 @@
                             {% endif %}
                             
                         </form>
-                        <!-- <form action="" method="post">
-                            {% csrf_token %}
-                            {% if user in object.likes.all %}
-                                <a class ='' type="submit" name = 'image_post.id' value="{{image_post.posted_by.id}}">
-                                    <img src="{% static 'images/likee.png' %" alt="" width="43">
-                                </a>
-                            {% else %}
-                                <a class = '' type="submit" name = 'image_post.id' value="{{image_post.posted_by.id}}">
-                                    <img src="{% static 'images/like.jpg' %}" alt="" width="43">
-                                </a>
-                            {% endif %}
-                            
-                        </form> -->
+                        
                     
                         <a href="{% url 'comment' image_post.id%}"><img src="{% static 'images/commentIcon.jpg' %}"  alt="" width="43"></a>
                         <a href=""><img src="{% static 'images/send.jpg' %}"  alt="" width="43"></a>
@@ -110,13 +98,16 @@
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
-                        <form action="" method="POST" class="d-flex">
+                        <form action="{% url 'post-comment' image_post.pk %}" method="post" class="d-flex">
                             {% csrf_token %}
-
-                            <!-- <div class="form-floating"></div>
-                                <input class="form-control" name="comment" placeholder="Leave a comment here" id="floatingTextarea"></input>
-                                <button type="submit" class="btn">Post</button>
-                            </div> -->
+        
+        
+                            {% bootstrap_form cForm%}
+        
+                            
+        
+                            <button class="btn btn-sm btn-success ms-1" style="height: 40px; margin-top: 30px;">Comment</button>
+                            
                         </form>
                     </li>
                 </ul>

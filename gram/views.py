@@ -89,13 +89,15 @@ def home(request):
         iForm = ImagePostForm()
 
    
-    
+    cForm = CommentForm(request.POST)
+
     title ='Home'
     context ={
         "images":images,
         "title":title,
         "iForm":iForm,
         "user":user,
+        'cForm': cForm,
         "profile":myProfile
         # "followed_post":followed_post
         # "post":post
@@ -148,17 +150,12 @@ def profile(request, username):
 @login_required(login_url='login')
 def userProfile(request, username):
     otherUser = get_object_or_404(User, username=username)
-
-    # otherUser2= get_object_or_404(Profile, user=username)
     userProfile = Profile.objects.get(user=otherUser)
     myProfile = Profile.objects.get(user=request.user)
     images = Image.objects.filter(posted_by = userProfile).order_by('-posted_on')
     
     
     title ='User Profile'
-
-    # print(userProfile) 
-    # 
     
     if userProfile.user in myProfile.following.all():
         follow = True
@@ -252,7 +249,7 @@ def add_comment(request, id):
         if cForm.is_valid():
             new_comment = cForm.save(commit=False)
             new_comment.image = image
-            new_comment.user = current_user
+            new_comment.posted_by = current_user
             new_comment.save()
             return redirect('home')
     else:
@@ -264,8 +261,20 @@ def add_comment(request, id):
     }
 
 
-    return render(request, 'gram/singlePost.html', context)
+    return redirect(request.META.get('HTTP_REFERER'))
 
+def editProfile(request,id):
+    updateProfile = Profile.objects.get(id=id)
+    eForm = UpdateUserForm
+    if request.method == 'POST':
+        form = eForm(request.POST,request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user_id = updateProfile.user.id
+            post.save()
+            return redirect(request.META.get('HTTP_REFERER'))
+
+    return render(request,'profile/editProfile.html',{"form":form})
 
 def editProfile(request, username):
     current_user = request.user
